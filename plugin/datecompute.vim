@@ -26,6 +26,8 @@ function! GetDayAfterDuring(begin_date, during)
     let begin_date = a:begin_date
     let during = a:during
     let end_date = begin_date
+    let week = during / 7
+    let day = during % 7
     while during > 0
         let end_date[2] = end_date[2] + 1
         if end_date[2] > GetDaysFromYearMouth(end_date[0], end_date[1])
@@ -38,6 +40,7 @@ function! GetDayAfterDuring(begin_date, during)
         endif
         let during -= 1
     endwhile
+    let end_date = end_date + [week, day]
     return end_date
 endfunction
 
