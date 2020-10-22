@@ -9,6 +9,13 @@ function! IsLeapYear(year)
     return v:false
 endfunction
 
+function! GetTodayDay()
+    let daystring = strftime("%Y %m %d")
+    let daylist = split(daystring, ' ')
+    let daylist = [str2nr(daylist[0]), str2nr(daylist[1]), str2nr(daylist[2])]
+    return daylist
+endfunction
+
 function! GetDaysFromYearMouth(y, m)
     let year = a:y
     let mouth = a:m
@@ -44,5 +51,28 @@ function! GetDayAfterDuring(begin_date, during)
     return end_date
 endfunction
 
+function! GetDuring(begin_date, end_date)
+    let begin_date = a:begin_date
+    let end_date = deepcopy(begin_date)
+    let total_day = 1
+    while v:true
+        let end_date[2] = end_date[2] + 1
+        if end_date[2] > GetDaysFromYearMouth(end_date[0], end_date[1])
+            let end_date[1] += 1
+            let end_date[2] = 1
+            if end_date[1] > 12
+                let end_date[0] += 1
+                let end_date[1] = 1
+            endif
+        endif
+        if end_date == a:end_date
+            break
+        endif
+        let total_day += 1
+    endwhile
+    return [total_day, total_day / 7, total_day % 7]
+endfunction
+
 let s:begin_date = [2020, 8, 17]
-command! -nargs=1 FFGetDay :echo GetDayAfterDuring(deepcopy(s:begin_date), <args>)
+command! -nargs=1 FFGetDayAfter :echo GetDayAfterDuring(deepcopy(s:begin_date), <args>)
+command! -nargs=0 FFGetToday :echo GetDuring(deepcopy(s:begin_date), GetTodayDay())
