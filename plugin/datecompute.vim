@@ -73,6 +73,6 @@ function! GetDuring(begin_date, end_date)
     return [total_day, total_day / 7, total_day % 7]
 endfunction
 
-let s:begin_date = [2020, 8, 17]
+let s:begin_date = [2020, 8, 16]
 command! -nargs=1 FFGetDayAfter :echo GetDayAfterDuring(deepcopy(s:begin_date), <args>)
 command! -nargs=0 FFGetToday :echo GetDuring(deepcopy(s:begin_date), GetTodayDay())
